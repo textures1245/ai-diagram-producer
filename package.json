@@ -1,0 +1,26 @@
+{
+  "name": "ai-gen-ctx-detection",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/textures1245/ai-generated-context-detection-v2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/textures1245/ai-generated-context-detection-v2/issues"
+  },
+  "homepage": "https://github.com/textures1245/ai-generated-context-detection-v2#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/bun": "^1.2.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
