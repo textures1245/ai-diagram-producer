@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "src",
+    "baseUrl": "src",
+    "outDir": "dist",
+    "paths": {
+      "@src/*": ["*"],
+      "@common/*": ["common/*"],
+      "@commands/*": ["commands/*"],
+      "@config/*": ["config/*"],
+      "@constants/*": ["constants/*"],
+      "@domain/*": ["domain/*"],
+      "@infrastructure/*": ["infrastructure/*"],
+      "@api/*": ["api/*"],
+      // "@ai-ctx/core": ["../core/src/index.ts"],
+    },
+    "types": ["reflect-metadata"]
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"],
+  "references": [{ "path": "../core" }]
+}

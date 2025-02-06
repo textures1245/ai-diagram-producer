@@ -1,0 +1,20 @@
+{
+  "name": "@ai-ctx/chat",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@ai-ctx/core": "workspace:*",
+    "@types/reflect-metadata": "^0.1.0",
+    "cassandra-driver": "^4.7.2",
+    "class-transformer": "^0.5.1",
+    "inversify": "^6.2.2",
+    "ioredis": "^5.4.2",
+    "kafkajs": "^2.2.4"
+  }
+}
