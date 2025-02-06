@@ -1,0 +1,17 @@
+import { Event } from "@ai-ctx/core";
+import type { ChatRole } from "../role";
+
+export class ChatCreated extends Event {
+  type = ChatCreated.name; // convert class name to string for typeof checking on `AggregateRoot.ts`
+  aggregateName = "chat";
+
+  constructor(
+    public guid: string,
+    public content: string,
+    public role: ChatRole,
+    public images?: string,
+    public tool_calls?: string
+  ) {
+    super(guid);
+  }
+}
