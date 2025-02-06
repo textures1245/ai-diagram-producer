@@ -1,7 +1,13 @@
 {
   "name": "@ai-ctx/core",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "build": "bun build"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

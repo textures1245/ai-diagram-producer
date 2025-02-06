@@ -1,5 +1,6 @@
 {
   "extends": "../../tsconfig.json",
+  "build": "bun build ./src/index.ts --outdir ./dist --format esm",
   "compilerOptions": {
     "composite": true,
     "declaration": true,
@@ -7,8 +8,9 @@
     "sourceMap": true,
     "rootDir": "src",
     "baseUrl": "src",
-    "outDir": "dist"
+    "outDir": "dist",
+    
   },
   "include": ["./src"],
-  // "exclude": ["./dist/**/*"]
+  "exclude": ["./dist/**/*"]
 }
