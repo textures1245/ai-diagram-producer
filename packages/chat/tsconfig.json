@@ -8,6 +8,7 @@
     "paths": {
       "@src/*": ["*"],
       "@common/*": ["common/*"],
+      "@application/*": ["application/*"],
       "@commands/*": ["commands/*"],
       "@config/*": ["config/*"],
       "@constants/*": ["constants/*"],
