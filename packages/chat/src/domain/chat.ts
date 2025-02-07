@@ -4,7 +4,7 @@ import { ChatCreated } from "./event/chat-created";
 import { ChatUpdated } from "./event/chat-updated";
 
 export class Chat extends AggregateRoot {
-  private content: string;
+  private content!: string;
   private role: ChatRole = ChatRole.ASSISTANT;
   private images?: string;
   private tool_calls?: string;
