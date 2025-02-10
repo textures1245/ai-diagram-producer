@@ -3,17 +3,20 @@ import {
   controller,
   httpGet,
   httpPost,
+  httpPut,
   request,
   response,
 } from "inversify-express-utils";
 import { inject } from "inversify";
 import type { Request, Response } from "express";
 import type { ICommandBus, IQueryBus } from "@ai-ctx/core";
-import { Logger } from "winston";
+
+import type { Logger } from "pino";
 import { CreateChatCommand } from "@src/application/commands/definition/create-chat";
 import { ok } from "../processor/resp";
 import { UpdateChatCommand } from "@src/application/commands/definition/update-chat";
 import { GetAllChatsQuery } from "@src/application/query/definition/get-all-chats-query";
+import type { ChatRole } from "@src/domain/role";
 
 @controller("/api/v1/chat")
 export class ChatController {
@@ -25,8 +28,8 @@ export class ChatController {
 
   @httpGet("")
   async getAllChats(@request() _req: Request, @response() resp: Response) {
-    this._logger.info("get all chats request");
     const chats = await this._queryBus.execute(new GetAllChatsQuery());
+    this._logger.info(`get all chats request ${JSON.stringify(chats)}`);
     return resp.json(ok("Chats fetched successfully", chats));
   }
 
@@ -49,9 +52,15 @@ export class ChatController {
     return resp.json(ok("Chat created successfully", cmdRes));
   }
 
-  @httpPost("/:id")
+  @httpPut("/:id")
   async updateChat(@request() req: Request, @response() resp: Response) {
-    const { content, role, images, tool_calls } = req.body;
+    const { content, role, images, tool_calls, version } = req.body as {
+      content: string;
+      role: ChatRole;
+      version: number;
+      images?: string;
+      tool_calls?: string;
+    };
     const { id } = req.params;
 
     this._logger.info(
@@ -65,7 +74,7 @@ export class ChatController {
     );
 
     await this._commandBus.send(
-      new UpdateChatCommand(id, content, role, images, tool_calls)
+      new UpdateChatCommand(id, content, role, version, images, tool_calls)
     );
     return resp.json(ok("Chat updated successfully", undefined));
   }

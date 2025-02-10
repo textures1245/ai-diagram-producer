@@ -1,7 +1,13 @@
+import "@api/http/controller/index";
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import config from "@src/config";
 import { infraInitialize } from "@src/startup";
 import { TYPES } from "@src/types";
 import type { Application } from "express";
+
+import "reflect-metadata";
 
 (async () => {
   const container = await infraInitialize();
