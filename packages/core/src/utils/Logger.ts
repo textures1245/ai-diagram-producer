@@ -1,19 +1,19 @@
-import { createLogger, transports, format } from 'winston';
+import pino from "pino";
+import "pino-pretty";
 
-export function createWinstonLogger(service: string) {
-  return createLogger({
-    level: process.env['LOG_LEVEL'] || 'info',
-    defaultMeta: { service },
-    format: format.combine(
-      format.simple(),
-      format.label({
-        label: '[LOGGER]',
-      }),
-      format.colorize({ all: true }),
-      format.timestamp({ format: 'YY-MM-DD HH:mm:ss' }),
-      format.align(),
-      format.printf((info) => `[${info.level}] ${new Date().toLocaleDateString('en-EN')} : ${info.message}`)
-    ),
-    transports: [new transports.Console()],
+export function createPinoLogger(service: string) {
+  const logger = pino({
+    level: process.env["LOG_LEVEL"] || "info",
+    base: { service },
+    timestamp: pino.stdTimeFunctions.isoTime,
+    transport: {
+      target: "pino-pretty",
+      options: {
+        colorize: true,
+        translateTime: "YY-MM-DD HH:mm:ss",
+        ignore: "pid,hostname",
+      },
+    },
   });
+  return logger;
 }
