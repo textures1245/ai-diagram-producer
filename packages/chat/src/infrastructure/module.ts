@@ -2,7 +2,7 @@ import { AsyncContainerModule, type interfaces } from "inversify";
 import { Db } from "mongodb";
 import type { Client } from "cassandra-driver";
 import { Kafka, type Consumer, type Producer } from "kafkajs";
-import RedisClient, { Redis } from "ioredis";
+// import RedisClient, { Redis } from "ioredis";
 
 import type { ICommandBus, IEventBus, IQuery, IQueryBus } from "@ai-ctx/core";
 import { TYPES } from "@src/types";
@@ -37,7 +37,7 @@ export const infrastructureModules = new AsyncContainerModule(
     bind<Client>(TYPES.CassandraDb).toConstantValue(cassandra);
     bind<Producer>(TYPES.KafkaProducer).toConstantValue(kafkaProducer);
     bind<Consumer>(TYPES.KafkaConsumer).toConstantValue(kafkaConsumer);
-    bind<Redis>(TYPES.Redis).toConstantValue(new RedisClient(config.REDIS_URI));
+    // bind<Redis>(TYPES.Redis).toConstantValue(new RedisClient(config.REDIS_URI));
     bind<IEventBus>(TYPES.EventBus).to(KafkaEventBus);
     bind<IChatEventStore>(TYPES.ChatEventStore)
       .to(ChatEventStore)
