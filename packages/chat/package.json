@@ -2,9 +2,17 @@
   "name": "@ai-ctx/chat",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "build": "bun build --force",
+    "dev": "nodemon",
+    "start": "TS_NODE_BASEURL=dist node -r tsconfig-paths/register dist/api/index.js",
+    "start:subscriber": "TS_NODE_BASEURL=dist node -r tsconfig-paths/register dist/subscribers/index.js",
+    "lint": "eslint --fix ."
+  },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/express": "^5.0.0"
+    "@types/express": "^5.0.0",
+    "concurrently": "^9.1.2"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -14,10 +22,12 @@
     "@types/reflect-metadata": "^0.1.0",
     "cassandra-driver": "^4.7.2",
     "class-transformer": "^0.5.1",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "inversify": "^6.2.2",
     "inversify-express-utils": "^6.4.10",
     "ioredis": "^5.4.2",
-    "kafkajs": "^2.2.4"
+    "kafkajs": "^2.2.4",
+    "tsconfig-paths": "^4.2.0"
   }
 }
