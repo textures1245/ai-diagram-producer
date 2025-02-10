@@ -14,7 +14,7 @@ export class ChatCreatedEventHandler implements IEventHandler<ChatCreated> {
   ) {}
 
   async handle(event: ChatCreated): Promise<void> {
-    const query = `INSERT INTO chat (guid, content, role, images, tool_calls, version) VALUES (?, ?, ?, ?, ?, ?)`;
+    const query = `INSERT INTO chats (guid, content, role, images, tool_calls, version) VALUES (?, ?, ?, ?, ?, ?)`;
 
     await this._cassandraCli.execute(
       query,
