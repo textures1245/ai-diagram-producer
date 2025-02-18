@@ -7,6 +7,8 @@ export class ChatCreated extends Event {
 
   constructor(
     public guid: string,
+    public user_guid: string,
+    public workspace_guid: string,
     public content: string,
     public role: ChatRole,
     public images?: string,

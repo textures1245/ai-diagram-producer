@@ -4,6 +4,8 @@ import { ChatCreated } from "./event/chat-created";
 import { ChatUpdated } from "./event/chat-updated";
 
 export class Chat extends AggregateRoot {
+  private user_guid!: string;
+  private workspace_guid!: string;
   private content!: string;
   private role: ChatRole = ChatRole.ASSISTANT;
   private images?: string;
@@ -13,6 +15,8 @@ export class Chat extends AggregateRoot {
 
   constructor(
     guid: string,
+    user_guid: string,
+    workspace_guid: string,
     content: string,
     role: ChatRole,
     images?: string,
@@ -21,15 +25,17 @@ export class Chat extends AggregateRoot {
 
   constructor(
     guid?: string,
+    userGuid?: string,
+    workspace_guid?: string,
     content?: string,
     role?: ChatRole,
     images?: string,
     tool_calls?: string
   ) {
     super(guid);
-    if (guid && content && role) {
+    if (guid && userGuid && workspace_guid && content && role) {
       this.applyChange(
-        new ChatCreated(guid, content, role, images, tool_calls)
+        new ChatCreated(guid, userGuid, workspace_guid, content, role, images, tool_calls)
       );
     }
   }
@@ -46,6 +52,8 @@ export class Chat extends AggregateRoot {
   }
 
   applyChatCreated(event: ChatCreated): void {
+    this.user_guid = event.user_guid;
+    this.workspace_guid = event.workspace_guid;
     this.guid = event.guid;
     this.content = event.content;
     this.role = event.role;
