@@ -67,6 +67,24 @@ export abstract class EventStore implements IEventStore {
     );
   }
 
+  async getEventsByDynamicQuery(
+    field: string,
+    aggregateGuid: string
+  ): Promise<IEvent[]> {
+    const events: any[] = await this._eventCollection
+      .find({ [field]: aggregateGuid })
+      .toArray();
+    if (!events.length) {
+      throw new NotFoundException(
+        `No events found for field: ${field} aggregate: ${aggregateGuid}`
+      );
+    }
+
+    return events.map((eventDescriptor: EventDescriptor) =>
+      rehydrateEventFromDescriptor(eventDescriptor)
+    );
+  }
+
   private async getLastEventDescriptor(aggregateGuid: string) {
     const [latestEvent] = await this._eventCollection
       .find({ aggregateGuid })

@@ -7,4 +7,8 @@ export interface IEventStore<T = any> {
     version: number
   ): Promise<void>;
   getEventsForAggregate(aggregateGuid: string): Promise<IEvent[]>;
+  getEventsByDynamicQuery(
+    field: string,
+    aggregateGuid: string
+  ): Promise<IEvent[]>;
 }
