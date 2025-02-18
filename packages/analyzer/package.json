@@ -1,5 +1,5 @@
 {
-  "name": "@ai-ctx/chat",
+  "name": "@ai-ctx/analyzer",
   "module": "index.ts",
   "type": "module",
   "scripts": {

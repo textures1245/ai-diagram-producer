@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "@ai-ctx/chat",
+      "name": "@ai-ctx/analyzer",
       "dependencies": {
         "@types/reflect-metadata": "^0.1.0",
       },
