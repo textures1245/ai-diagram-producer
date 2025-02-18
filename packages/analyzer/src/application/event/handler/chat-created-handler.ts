@@ -3,7 +3,7 @@ import { ChatCreated } from "@src/domain/event/chat-created";
 import { TYPES } from "@src/types";
 import type { Client } from "cassandra-driver";
 import { inject } from "inversify";
-import { Logger } from "winston";
+import type { Logger } from "pino";
 
 export class ChatCreatedEventHandler implements IEventHandler<ChatCreated> {
   public event = ChatCreated.name;
