@@ -1,6 +1,7 @@
 {
-  "extends": ["./.wxt/tsconfig.json", "../../tsconfig.json"],
+  "extends": ["./.wxt/tsconfig.json"],
   "compilerOptions": {
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "experimentalDecorators": true
   }
 }
