@@ -35,7 +35,15 @@ export class Chat extends AggregateRoot {
     super(guid);
     if (guid && userGuid && workspace_guid && content && role) {
       this.applyChange(
-        new ChatCreated(guid, userGuid, workspace_guid, content, role, images, tool_calls)
+        new ChatCreated(
+          guid,
+          userGuid,
+          workspace_guid,
+          content,
+          role,
+          images,
+          tool_calls
+        )
       );
     }
   }
