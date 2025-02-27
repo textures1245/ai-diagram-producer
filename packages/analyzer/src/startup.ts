@@ -28,7 +28,7 @@ import { errorHandler } from "./api/http/middleware/error-handler";
 
 export const infraInitialize = async () => {
   const container = new Container();
-  const logger = createPinoLogger("ai-ctx-chat");
+  const logger = createPinoLogger("ai-ctx-analyzer");
 
   await container.loadAsync(infrastructureModules);
 
