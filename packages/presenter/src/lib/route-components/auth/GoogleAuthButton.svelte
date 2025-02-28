@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button } from "$lib/components/ui/button";
+  import { Button } from "../../components/ui/button";
 </script>
 
 <Button size="sm" variant="secondary" class="text-xs cursor-pointer">

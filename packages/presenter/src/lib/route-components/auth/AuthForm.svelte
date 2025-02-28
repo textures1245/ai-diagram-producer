@@ -1,16 +1,36 @@
 <script lang="ts">
-  import { Button } from "$lib/components/ui/button";
-  import { Input } from "$lib/components/ui/input";
-
-  import { Label } from "$lib/components/ui/label";
-
-  // Removed unused imports from $lib
-
+  import { Button } from "../../components/ui/button";
+  import { Input } from "../../components/ui/input";
+  import { Label } from "../../components/ui/label";
+  
   let formData = { email: "", password: "" };
+  let isLoading = false;
+  let errorMessage = "";
 
-  function handleSubmit(e: Event) {
+  async function handleSubmit(e: Event) {
     e.preventDefault();
-    // ...existing code for submission...
+    isLoading = true;
+    errorMessage = "";
+
+    // try {
+    //   const result = await messaging.authenticateUser({
+    //     email: formData.email,
+    //     password: formData.password
+    //   });
+
+    //   if (!result.success) {
+    //     errorMessage = result.error || "Authentication failed";
+    //     return;
+    //   }
+
+    //   // Handle successful authentication
+    //   // For example, store the user data and token in a store
+    //   // and redirect to another page
+    // } catch (error) {
+    //   errorMessage = error.message || "An unexpected error occurred";
+    // } finally {
+    //   isLoading = false;
+    // }
   }
 </script>
 
@@ -28,6 +48,7 @@
         class="text-xs"
         bind:value={formData.email}
         required
+        disabled={isLoading}
       />
     </div>
     <!-- Password Field -->
@@ -41,12 +62,22 @@
         name="password"
         bind:value={formData.password}
         required
+        disabled={isLoading}
       />
       <small class="text-muted-foreground">Include one special character</small>
     </div>
   </div>
-  <Button size="sm" class="w-full cursor-pointer text-xs" type="submit"
-    >Continue with email</Button
+  
+  {#if errorMessage}
+    <div class="text-red-500 text-xs mb-2">{errorMessage}</div>
+  {/if}
+  
+  <Button 
+    size="sm" 
+    class="w-full cursor-pointer text-xs" 
+    type="submit"
+    disabled={isLoading}
   >
-  <!-- ...existing code if any... -->
+    {isLoading ? 'Authenticating...' : 'Continue with email'}
+  </Button>
 </form>
