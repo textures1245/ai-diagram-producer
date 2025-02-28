@@ -5,8 +5,8 @@ export class UserSession {
   private email: string;
   private username?: string;
 
-  constructor(email: string, username?: string) {
-    this._id = nanoid();
+  constructor(email: string, id: string = nanoid(), username?: string) {
+    this._id = id;
     this.email = email;
     this.username = username;
   }

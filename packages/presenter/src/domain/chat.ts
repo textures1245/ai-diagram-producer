@@ -25,4 +25,8 @@ export class Chat extends Workspace {
     this.images = images;
     this.toolCalls = toolCalls;
   }
+
+  static mockData(role: ChatRole): Chat {
+    return new Chat("123", "workspace-id", "123", "Hello", role, "", "");
+  }
 }
