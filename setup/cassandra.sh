@@ -12,4 +12,4 @@ cqlsh cassandra -e "CREATE TABLE IF NOT EXISTS ai_ctx_dev.chats (guid text, user
 cqlsh cassandra -e "CREATE TABLE IF NOT EXISTS ai_ctx_dev.workspaces (guid text, user_guid text, created_at timestamp, version int, PRIMARY KEY ((guid), user_guid);"
 
 # using in presenter domain
-cqlsh cassandra -e "CREATE TABLE IF NOT EXISTS ai_ctx_dev.users (guid text , name text, created_at timestamp, updated_at timestamp, version int, PRIMARY KEY (guid));"
+cqlsh cassandra -e "CREATE TABLE IF NOT EXISTS ai_ctx_dev.users (guid text , email text, password text, created_at timestamp, updated_at timestamp, version int, PRIMARY KEY (guid));"
