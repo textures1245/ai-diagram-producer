@@ -1,4 +1,4 @@
 export const TYPES = {
-  JwtSecret: Symbol("JwtSecret"),
-  GoogleToken: Symbol("GoogleToken"),
+  AuthService: Symbol("AuthService"),
+  Logger: Symbol("Logger"),
 };
