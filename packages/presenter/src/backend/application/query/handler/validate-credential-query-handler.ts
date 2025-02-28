@@ -6,7 +6,7 @@ import type { Client } from "cassandra-driver";
 import bcrypt from "bcrypt";
 import type { UserResponse } from "../definition/user-response";
 
-export class GetUserPasswordQueryHandler
+export class ValidateCredentialQueryHandler
   implements IQueryHandler<ValidateCredentialQuery, UserResponse>
 {
   queryToHandler = ValidateCredentialQuery.name;
@@ -25,11 +25,10 @@ export class GetUserPasswordQueryHandler
     const user = {
       email: query.email,
       id: result["guid"] as string,
-      password: result["password"] as string,
     };
 
     try {
-      const ok = await bcrypt.compare(query.password, user.password);
+      const ok = await bcrypt.compare(query.password, result["password"]);
       if (!ok) {
         throw new Error("Invalid password");
       }

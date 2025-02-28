@@ -8,6 +8,7 @@ import { CreateUserCommand } from "../../../application/commands/definition/crea
 import { UpdateUserPasswordCommand } from "../../../application/commands/definition/update-user-password";
 import { ValidateCredentialQuery } from "../../../application/query/definition/validate-credential-query";
 import type { UserResponse } from "../../../application/query/definition/user-response";
+import { GetUserByIdQuery } from "../../../application/query/definition/get-user-by-id-query";
 
 @injectable()
 export class UserPrivateController implements IAdapterController {
@@ -17,6 +18,7 @@ export class UserPrivateController implements IAdapterController {
     @inject(TYPES.Logger) private readonly _logger: Logger
   ) {}
 
+  //- Query
   async validateCredentials<T = { email: string; password: string }>(
     req: T
   ): Promise<UserResponse> {
@@ -29,6 +31,15 @@ export class UserPrivateController implements IAdapterController {
     return ok;
   }
 
+  async getUserById<T = { userId: string }>(req: T): Promise<UserResponse> {
+    const { userId } = req as { userId: string };
+
+    const user = await this._queryBus.execute(new GetUserByIdQuery(userId));
+    this._logger.info(`User retrieved with ID: ${userId}`);
+    return user;
+  }
+
+  //- Commands
   async createUser<T = { email: string; password: string }>(
     req: T
   ): Promise<any> {
