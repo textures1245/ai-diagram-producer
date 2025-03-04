@@ -66,7 +66,7 @@ export const infraInitialize = async () => {
 
   const server = new InversifyExpressServer(container);
 
-  server.setConfig((app: Application) => {
+server.setConfig((app: Application) => {
     app.use(json());
     app.use(urlencoded({ extended: true }));
   });

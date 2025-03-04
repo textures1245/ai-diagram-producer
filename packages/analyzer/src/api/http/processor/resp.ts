@@ -1,7 +1,7 @@
-export const ok = (msg: string, data: any) => {
+export const ok = (msg: string, data: any, status: string = "200") => {
   return {
     message: msg || "SUCCESS",
-    status: "200",
+    status,
     data,
   };
 };
