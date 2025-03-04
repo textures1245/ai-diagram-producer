@@ -1,0 +1,16 @@
+{
+  "name": "@ai-ctx/presenter-backend",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@ai-ctx/presenter-backend": ".",
+    "express": "^4.21.2",
+    "inversify-express-utils": "^6.4.10"
+  }
+}
