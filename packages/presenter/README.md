@@ -1,7 +1,15 @@
-# WXT + Svelte
+# presenter
 
-This template should help get you started developing with Svelte in WXT.
+To install dependencies:
 
-## Recommended IDE Setup
+```bash
+bun install
+```
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+To run:
+
+```bash
+bun run index.ts
+```
+
+This project was created using `bun init` in bun v1.2.2. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
