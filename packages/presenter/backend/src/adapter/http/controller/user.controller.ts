@@ -4,6 +4,7 @@ import {
   httpGet,
   httpPost,
   httpPut,
+  request,
   requestBody,
   requestParam,
   response,
@@ -17,12 +18,11 @@ import { UpdateUserPasswordCommand } from "../../../application/commands/definit
 import { ValidateCredentialQuery } from "../../../application/query/definition/validate-credential-query";
 import { GetUserByIdQuery } from "../../../application/query/definition/get-user-by-id-query";
 import { ok } from "../processor/resp";
+import { GetAllUsersQuery } from "@src/application/query/definition/get-all-users-query";
 
 interface CreateUserRequest {
   email: string;
   password: string;
-  name?: string;
-  googleId?: string;
 }
 
 interface UpdatePasswordRequest {
@@ -44,6 +44,13 @@ export class UserHttpController {
     @inject(TYPES.QueryBus) private readonly queryBus: IQueryBus,
     @inject(TYPES.Logger) private readonly logger: Logger
   ) {}
+
+  @httpGet("/")
+  async getAllUsers(@request() _: Request, @response() res: Response) {
+    const users = await this.queryBus.execute(new GetAllUsersQuery());
+
+    return res.json(ok("Users fetched successfully", users));
+  }
 
   @httpGet("/:userId")
   async getUser(
@@ -90,14 +97,17 @@ export class UserHttpController {
   }
 
   @httpPost("/validate-credential")
-  async login(@requestBody() req: LoginRequest, @response() res: Response) {
+  async validateCredential(
+    @requestBody() req: LoginRequest,
+    @response() res: Response
+  ) {
     const { email, password } = req;
 
     const user = await this.queryBus.execute(
       new ValidateCredentialQuery(email, password)
     );
 
-    this.logger.info(`User logged in: ${email}`);
-    return res.json(ok("User logged in successfully", user));
+    this.logger.info(`User credentials validated for: ${email}`);
+    return res.json(ok("Credentials validated successfully", user));
   }
 }
