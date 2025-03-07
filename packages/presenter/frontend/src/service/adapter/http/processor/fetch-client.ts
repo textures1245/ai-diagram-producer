@@ -42,35 +42,23 @@ export class FetchClient implements HttpClient {
       options.body = JSON.stringify(data);
     }
 
-    try {
-      const response = await fetch(`${this.baseUrl}${url}`, options);
+    const response = await fetch(`${this.baseUrl}${url}`, options);
 
-      // Log request details
-      console.debug({
-        request: {
-          url: `${this.baseUrl}${url}`,
-          method,
-          headers: requestHeaders,
-        },
-        response: {
-          status: response.status,
-          statusText: response.statusText,
-        },
-      });
+    // Log request details
+    console.debug({
+      request: {
+        url: `${this.baseUrl}${url}`,
+        method,
+        headers: requestHeaders,
+      },
+      response: {
+        status: response.status,
+        statusText: response.statusText,
+      },
+    });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(
-          errorData?.message || `Request failed with status ${response.status}`
-        );
-      }
-
-      const responseData = await response.json();
-      return responseData;
-    } catch (error) {
-      console.error("HTTP request failed:", error);
-      throw error;
-    }
+    const responseData = await response.json();
+    return responseData;
   }
 
   get<T>(url: string, headers?: Record<string, string>): Promise<T> {

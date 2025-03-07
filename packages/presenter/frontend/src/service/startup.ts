@@ -33,7 +33,6 @@ export const serviceModules = async () => {
   container.bind<AuthService>(TYPES.AuthService).toDynamicValue((context) => {
     return new AuthService(
       config.key.jwtToken,
-      config.key.googleToken,
       context.container.get<AuthController>(TYPES.AuthController)
     );
   });

@@ -8,7 +8,6 @@ import { AuthController } from "./adapter/http/controller/auth.controller";
 export class AuthService {
   constructor(
     @unmanaged() private readonly jwtSecret: string,
-    @unmanaged() private readonly googleClientId: string,
     @inject(TYPES.AuthController)
     private readonly authController: AuthController
   ) {}
@@ -115,71 +114,72 @@ export class AuthService {
    * Authenticate with Google
    */
   async authenticateWithGoogle(idToken: string) {
-    try {
-      // Use browser-based verification instead of OAuth2Client
-      // This requires the token to be verified on the client-side
-      const response = await fetch(
-        `https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Invalid Google token");
+    // Use browser-based verification instead of OAuth2Client
+    // This requires the token to be verified on the client-side
+    const response = await fetch(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
       }
+    );
 
-      const payload = await response.json();
+    if (!response.ok) {
+      throw new Error("Invalid Google token");
+    }
 
-      if (!payload) {
-        throw new Error("Invalid Google token");
-      }
+    const payload = await response.json();
 
-      const { email, sub: googleId, name } = payload;
+    if (!payload) {
+      throw new Error("Invalid Google token");
+    }
 
-      if (!email) throw new Error("Email is required");
+    const { email, sub: googleId, name } = payload;
 
-      // Find or create user
-      let user = await this.authController.validateCredentials({
+    if (!email) throw new Error("Email is required");
+
+    // Find or create user
+    let user = await this.authController.validateCredentials({
+      email,
+      password: googleId,
+    });
+
+    if (!user) {
+      // Create new user if doesn't exist
+      user = await this.authController.registerUser({
         email,
         password: googleId,
       });
-
-      if (!user) {
-        // Create new user if doesn't exist
-        user = await this.authController.registerUser({
-          email,
-          password: googleId,
-        });
-      } else {
-        console.info(`User authenticated with email: ${email}`);
-      }
-
-      const secretKey = new TextEncoder().encode(this.jwtSecret);
-
-      const token = await new jose.SignJWT({
-        userId: user.id,
-        email: user.email,
-      })
-        .setProtectedHeader({ alg: "HS256" })
-        .setExpirationTime("24h")
-        .sign(secretKey);
-
-      const refreshToken = await new jose.SignJWT({
-        userId: user.id,
-        tokenType: "refresh",
-      })
-        .setProtectedHeader({ alg: "HS256" })
-        .setExpirationTime("7d")
-        .sign(secretKey);
-
-      console.info(`User authenticated with Google: ${user.email}`);
-
-      return {
-        user,
-        token,
-        refreshToken,
-      };
-    } catch (error) {
-      throw new Error("Google authentication failed");
+    } else {
+      console.info(`User authenticated with email: ${email}`);
     }
+
+    const secretKey = new TextEncoder().encode(this.jwtSecret);
+
+    const token = await new jose.SignJWT({
+      userId: user.id,
+      email: user.email,
+    })
+      .setProtectedHeader({ alg: "HS256" })
+      .setExpirationTime("24h")
+      .sign(secretKey);
+
+    const refreshToken = await new jose.SignJWT({
+      userId: user.id,
+      tokenType: "refresh",
+    })
+      .setProtectedHeader({ alg: "HS256" })
+      .setExpirationTime("7d")
+      .sign(secretKey);
+
+    console.info(`User authenticated with Google: ${user.email}`);
+
+    return {
+      user,
+      token,
+      refreshToken,
+    };
   }
 
   /**
