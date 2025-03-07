@@ -19,6 +19,7 @@ export const TYPES = {
   UserPrivateController: Symbol("UserPrivateController"),
 
   Logger: Symbol("Logger"),
+  RequestLoggerMiddleware: Symbol("RequestLoggerMiddleware"),
 
   UserEventStore: Symbol("UserEventStore"),
   UserRepository: Symbol("UserRepository"),

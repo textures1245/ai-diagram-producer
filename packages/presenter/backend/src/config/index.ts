@@ -1,12 +1,12 @@
 export default {
-  API_PORT: process.env["API_PORT"] || 3200,
+  API_PORT: process.env["API_PORT"] || 3500,
   MONGODB_URI: process.env["MONGODB_URI"] || "mongodb://localhost:27017",
-  DB_NAME: process.env["DB_NAME"] || "presenter-dev",
+  DB_NAME: process.env["DB_NAME"] || "ai_ctx-dev",
   REDIS_URI: process.env["REDIS_URI"] || "redis://localhost:6379",
   KAFKA_BROKER_LIST: process.env["KAFKA_BROKER_LIST"] || "localhost:9092",
   KAFKA_CONSUMER_GROUP_ID:
-    process.env["KAFKA_CONSUMER_GROUP_ID"] || "ai-ctx-presenter.dev",
-  KAFKA_TOPICS_TO_SUBSCRIBE: process.env["KAFKA_TOPICS_TO_SUBSCRIBE"] || "presenter",
+    process.env["KAFKA_CONSUMER_GROUP_ID"] || "ai_ctx.dev",
+  KAFKA_TOPICS_TO_SUBSCRIBE: process.env["KAFKA_TOPICS_TO_SUBSCRIBE"] || "user,workspace,chat",
   CASSANDRA_HOSTS: process.env["CASSANDRA_HOSTS"]
     ? process.env["CASSANDRA_HOSTS"].split(",")
     : ["localhost:9042"],
