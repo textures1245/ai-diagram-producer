@@ -10,9 +10,10 @@ import { storage } from "wxt/storage";
 
 import { config } from "../config/index";
 
-import 'reflect-metadata';
+import "reflect-metadata";
 
 export default defineBackground(async () => {
+  console.log("Extension redirect URI:", chrome.identity.getRedirectURL());
   console.log("Initializing LLM Diagram Producer background...");
 
   // Initialize IoC container
@@ -25,7 +26,6 @@ export default defineBackground(async () => {
   msg.onMessage(
     "authenticateUser",
     async (msg: { data: { email: string; password: string } }) => {
-
       const { email, password } = msg.data;
       console.info("Authentication request received", { email });
       try {

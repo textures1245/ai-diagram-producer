@@ -1,6 +1,7 @@
 <script lang="ts">
-  import CoreRoute from "$lib/CoreRoute.svelte"
+  import CoreRoute from "$lib/CoreRoute.svelte";
   import AuthRoute from "./../../lib/AuthRoute.svelte";
+
 </script>
 
 <!-- <CoreRoute /> -->
