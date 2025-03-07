@@ -9,12 +9,10 @@
       "@src/*": ["*"],
       "@common/*": ["common/*"],
       "@application/*": ["application/*"],
-      "@commands/*": ["commands/*"],
       "@config/*": ["config/*"],
-      "@constants/*": ["constants/*"],
       "@domain/*": ["domain/*"],
       "@infrastructure/*": ["infrastructure/*"],
-      "@api/*": ["api/*"],
+      "@adapter/*": ["adapter/*"],
       // "@ai-ctx/core": ["../core/src/index.ts"],
     },
     "types": ["reflect-metadata"]

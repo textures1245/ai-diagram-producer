@@ -1,0 +1,6 @@
+{
+    "watch": ["src/**/*.ts"],
+    "ext": "ts",
+    "exec": "rm -rf dist && bun build ./src/adapter/index.ts --outdir ./dist/adapter/index.js --format esm  --target bun --force && bun build ./src/subscribers/index.ts --outdir ./dist/subscribers/index.js --format esm  --target bun --force && concurrently --raw \"TS_NODE_BASEURL=dist bun run -r tsconfig-paths/register dist/adapter/index.js\" \"TS_NODE_BASEURL=dist bun run -r tsconfig-paths/register dist/subscribers/index.js\""
+  }
+  
