@@ -10,6 +10,7 @@ export class ChatEventStore extends EventStore implements IChatEventStore {
     @inject(TYPES.Db) private readonly db: Db,
     @inject(TYPES.EventBus) private readonly eventBus: IEventBus
   ) {
+    // Cast the collection to any to bypass the type incompatibility between different MongoDB versions
     super(db.collection("chat-events"), eventBus);
   }
 }

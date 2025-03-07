@@ -5,7 +5,10 @@ import { injectable, inject } from "inversify";
 import { Db } from "mongodb";
 
 @injectable()
-export class WorkspaceEventStore extends EventStore implements IWorkspaceEventStore {
+export class WorkspaceEventStore
+  extends EventStore
+  implements IWorkspaceEventStore
+{
   constructor(
     @inject(TYPES.Db) private readonly db: Db,
     @inject(TYPES.EventBus) private readonly eventBus: IEventBus

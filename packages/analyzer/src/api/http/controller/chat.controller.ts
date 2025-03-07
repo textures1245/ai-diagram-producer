@@ -35,10 +35,13 @@ export class ChatController {
 
   @httpPost("")
   async createChat(@request() req: Request, @response() resp: Response) {
-    const { content, role, images, tool_calls } = req.body;
+    const { workspace_id, user_id, content, role, images, tool_calls } =
+      req.body;
 
     this._logger.info(
       `received create chat request: ${JSON.stringify({
+        workspace_id,
+        user_id,
         content,
         role,
         images,
@@ -47,7 +50,14 @@ export class ChatController {
     );
 
     const cmdRes = await this._commandBus.send(
-      new CreateChatCommand(content, role, images, tool_calls)
+      new CreateChatCommand(
+        user_id,
+        workspace_id,
+        content,
+        role,
+        images,
+        tool_calls
+      )
     );
     return resp.json(ok("Chat created successfully", cmdRes));
   }
