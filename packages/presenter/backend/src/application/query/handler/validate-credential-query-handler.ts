@@ -1,9 +1,9 @@
-import type { IQueryHandler } from "@ai-ctx/core";
+import { NotFoundException, type IQueryHandler } from "@ai-ctx/core";
 import { ValidateCredentialQuery } from "../definition/validate-credential-query";
 import { TYPES } from "../../../types";
 import { inject } from "inversify";
 import type { Client } from "cassandra-driver";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import type { UserResponse } from "../definition/user-response";
 
 export class ValidateCredentialQueryHandler
@@ -20,21 +20,17 @@ export class ValidateCredentialQueryHandler
 
     const [result] = await this._cassandraCli.execute(csql, [query.email]);
     if (!result) {
-      throw new Error("User not found");
+      throw new NotFoundException("User not found");
     }
     const user = {
       email: query.email,
       id: result["guid"] as string,
     };
 
-    try {
-      const ok = await bcrypt.compare(query.password, result["password"]);
-      if (!ok) {
-        throw new Error("Invalid password");
-      }
-      return user;
-    } catch (e) {
-      throw new Error("Error while comparing passwords");
+    const ok = await bcrypt.compare(query.password, result["password"]);
+    if (!ok) {
+      throw new Error("User found, but invalid password");
     }
+    return user;
   }
 }

@@ -4,7 +4,7 @@ import { TYPES } from "../../../types";
 import type { UserRepository } from "../../../infrastructure/repository/user-repository";
 import { inject } from "inversify";
 import { User } from "../../../domain/user";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export class CreateUserCommandHandler
   implements ICommandHandler<CreateUserCommand>

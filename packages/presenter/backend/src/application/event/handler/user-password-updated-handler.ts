@@ -1,9 +1,10 @@
 import type { IEventHandler } from "@ai-ctx/core";
 import { inject } from "inversify";
-import { UserPasswordUpdated } from "../../../domain/event/user-password-updated";
-import { TYPES } from "../../../../types";
+import { UserPasswordUpdated } from "@domain/event/user-password-updated";
+
 import type pino from "pino";
 import type { Client } from "cassandra-driver";
+import { TYPES } from "@src/types";
 
 export class UserPasswordUpdatedEventHandler
   implements IEventHandler<UserPasswordUpdated>

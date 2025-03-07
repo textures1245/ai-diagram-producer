@@ -1,13 +1,14 @@
 import type { IEventHandler } from "@ai-ctx/core";
-import type { UserCreated } from "../../../domain/event/user-created";
-import { ChatCreated } from "../../../../../../analyzer/src/domain/event/chat-created";
+import { UserCreated } from "../../../domain/event/user-created";
+
 import type { Client } from "cassandra-driver";
 import { inject } from "inversify";
-import { TYPES } from "../../../../types";
 import type { Logger } from "pino";
 
+import { TYPES } from "@src/types";
+
 export class UserCreatedEventHandler implements IEventHandler<UserCreated> {
-  public event = ChatCreated.name;
+  public event = UserCreated.name;
 
   constructor(
     @inject(TYPES.CassandraDb) private readonly _cassandraCli: Client,
