@@ -1,12 +1,13 @@
 {
-  "name": "ai-gen-ctx-detection",
+  "name": "ai-ctx",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "packages/presenter/*"
   ],
   "repository": {
     "type": "git",
@@ -27,6 +28,8 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@webext-core/storage": "^1.2.0"
+    "@types/mongodb": "^4.0.7",
+    "@webext-core/storage": "^1.2.0",
+    "mongodb": "^6.13.0"
   }
 }
