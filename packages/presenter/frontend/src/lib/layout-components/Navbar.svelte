@@ -1,11 +1,11 @@
 <script lang="ts">
   import Collapsible from "./Collapsible.svelte";
-  import { Workspace } from "@/domain/workspace";
+  import type { Workspace } from "@/domain/workspace";
 
-  export let contents: {
-    username: string;
-    workspaceHistories: Workspace[];
-  };
+  let {
+    contents,
+  }: { contents: { username: string; workspaceHistories: Workspace[] } } =
+    $props();
 </script>
 
 <div class="flex w-full items-center justify-between gap-4 px-4 py-4">

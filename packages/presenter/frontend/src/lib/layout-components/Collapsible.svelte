@@ -5,10 +5,10 @@
 
   import type { Workspace } from "@/domain/workspace";
 
-  export let contents: {
-    username: string;
-    workspaceHistories: Workspace[];
-  };
+  let {
+    contents,
+  }: { contents: { username: string; workspaceHistories: Workspace[] } } =
+    $props();
 </script>
 
 <Collapsible.Root class="w-fit space-y-1">

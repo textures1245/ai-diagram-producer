@@ -2,7 +2,7 @@
 
 <script lang="ts">
   import Badge from "$lib/components/ui/badge/badge.svelte";
-  import { AuthMessagingMethods } from "@/service/messaging/auth-service.interface";
+  import { AuthMessagingMethods } from "$service/messaging/auth-message.interface";
   import { Button } from "../../components/ui/button";
   import { Input } from "../../components/ui/input";
   import { Label } from "../../components/ui/label";
