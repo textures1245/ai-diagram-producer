@@ -10,7 +10,7 @@ export type AuthState = {
 
 // Create auth store with minimal functionality
 function createAuthStore() {
-  const { subscribe, set, update } = writable<AuthState>({
+  const { subscribe, set, update} = writable<AuthState>({
     user: null,
     token: null,
     refreshToken: null,
