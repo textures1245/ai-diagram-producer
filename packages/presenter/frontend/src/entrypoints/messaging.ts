@@ -1,5 +1,5 @@
 import { defineExtensionMessaging } from "@webext-core/messaging";
-import type { IAuthMessaging } from "$service/messaging/auth-service.interface";
+import type { IAuthMessaging } from "$service/messaging/auth-message.interface";
 
 interface ProtocalMap extends IAuthMessaging {}
 

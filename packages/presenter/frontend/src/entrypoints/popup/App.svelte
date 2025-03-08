@@ -1,12 +1,10 @@
 <script lang="ts">
-  import CoreRoute from "$lib/CoreRoute.svelte";
-  import AuthRoute from "./../../lib/AuthRoute.svelte";
-
+  import { Router } from "svelte-router-spa";
+  import { routes } from "./router";
 </script>
 
-<!-- <CoreRoute /> -->
 <main class="w-90 h-full">
-  <AuthRoute />
+  <Router {routes} />
 </main>
 
 <style>
