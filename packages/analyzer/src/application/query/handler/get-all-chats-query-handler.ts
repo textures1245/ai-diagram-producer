@@ -16,7 +16,7 @@ export class GetAllChatsQueryHandler
   ) {}
 
   async execute(_: GetAllChatsQuery) {
-    const query = `SELECT guid, content, role, images, tool_calls, version FROM chats`;
+    const query = `SELECT guid, content, role, images, tool_calls, created_at, updated_at version FROM chats`;
     const queryResult = await this._cassandraCli.execute(query);
     const resp: ChatQueryResponseModel[] = queryResult.rows.map((row) => ({
       id: row["id"] as string,
@@ -25,6 +25,8 @@ export class GetAllChatsQueryHandler
       images: row["images"] as string,
       tool_calls: row["tool_calls"] as string,
       version: row["version"] as number,
+      updated_at: row["updated_at"] as Date,
+      created_at: row["created_at"] as Date,
     }));
     return resp;
   }
