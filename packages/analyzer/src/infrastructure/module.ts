@@ -16,6 +16,10 @@ import { ChatEventStore } from "@infrastructure/event-store/chat-event-store";
 import { ChatRepository } from "@infrastructure/repository/chat-repository";
 import { CommandBus } from "@infrastructure/command-bus";
 import { QueryBus } from "@infrastructure/query-bus";
+import type { IWorkspaceEventStore } from "@src/domain/workspace-event-store.interface";
+import { WorkspaceEventStore } from "./event-store/workspace-event-store";
+import { WorkspaceRepository } from "./repository/workspace-repository";
+import type { IWorkspaceRepository } from "@src/domain/workspace-repository.interface";
 
 export const infrastructureModules = new AsyncContainerModule(
   async (bind: interfaces.Bind) => {
@@ -39,12 +43,21 @@ export const infrastructureModules = new AsyncContainerModule(
     bind<Consumer>(TYPES.KafkaConsumer).toConstantValue(kafkaConsumer);
     // bind<Redis>(TYPES.Redis).toConstantValue(new RedisClient(config.REDIS_URI));
     bind<IEventBus>(TYPES.EventBus).to(KafkaEventBus);
+
     bind<IChatEventStore>(TYPES.ChatEventStore)
       .to(ChatEventStore)
       .inSingletonScope();
     bind<IChatRepository>(TYPES.ChatRepository)
       .to(ChatRepository)
       .inSingletonScope();
+
+    bind<IWorkspaceEventStore>(TYPES.WorkspaceEventStore)
+      .to(WorkspaceEventStore)
+      .inSingletonScope();
+    bind<IWorkspaceRepository>(TYPES.WorkspaceRepository)
+      .to(WorkspaceRepository)
+      .inSingletonScope();
+
     bind<ICommandBus>(TYPES.CommandBus).toConstantValue(new CommandBus());
     bind<IQueryBus<IQuery>>(TYPES.QueryBus).toConstantValue(new QueryBus());
   }
