@@ -8,6 +8,8 @@ export class CreateChatCommand extends Command {
   public role: ChatRole;
   public images?: string;
   public tool_calls?: string;
+  public created_at?: Date;
+  public updated_at?: Date;
 
   constructor(
     userGuid: string,
@@ -16,7 +18,9 @@ export class CreateChatCommand extends Command {
     role: ChatRole,
     guid?: string,
     images?: string,
-    tool_calls?: string
+    tool_calls?: string,
+    created_at: Date = new Date(),
+    updated_at: Date = new Date()
   ) {
     super(guid);
     this.userGuid = userGuid;
@@ -25,5 +29,7 @@ export class CreateChatCommand extends Command {
     this.role = role;
     this.images = images;
     this.tool_calls = tool_calls;
+    this.created_at = created_at;
+    this.updated_at = updated_at;
   }
 }

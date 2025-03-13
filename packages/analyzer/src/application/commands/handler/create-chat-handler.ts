@@ -22,7 +22,9 @@ export class CreateChatCommandHandler
       cmd.content,
       cmd.role,
       cmd.images,
-      cmd.tool_calls
+      cmd.tool_calls,
+      cmd.created_at,
+      cmd.updated_at
     );
     await this._repo.save(chat, -1);
     return { guid: cmd.guid };

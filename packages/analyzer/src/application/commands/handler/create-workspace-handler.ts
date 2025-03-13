@@ -16,7 +16,7 @@ export class CreateWorkspaceCommandHandler
   ) {}
 
   async handle(command: CreateWorkspaceCommand): Promise<{ guid: string }> {
-    const workspace: Workspace = new Workspace(command.guid, command.userGuid);
+    const workspace: Workspace = new Workspace(command.guid, command.userGuid, command.title);
     await this._repo.save(workspace, -1);
     return { guid: command.guid };
   }
