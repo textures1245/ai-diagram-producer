@@ -15,13 +15,14 @@ export class WorkspaceCreatedEventHandler implements IEventHandler<WorkspaceCrea
     ) {}
 
     async handle(event: WorkspaceCreated): Promise<void> {
-        const query = `INSERT INTO workspaces (guid, user_guid, version) VALUES (?, ?, ?)`;
+        const query = `INSERT INTO workspaces (guid, user_guid, title, version) VALUES (?, ?, ?, ?)`;
 
         await this._cassandraCli.execute(
             query,
             [
                 event.guid,
                 event.user_guid,
+                event.title,
                 event.version,
             ],
             { prepare: true }

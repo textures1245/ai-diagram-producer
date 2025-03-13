@@ -12,7 +12,7 @@ export class ChatUpdatedEventHandler implements IEventHandler<ChatUpdated> {
     ) {}
     
     async handle(event: ChatUpdated): Promise<void> {
-        const query = `UPDATE chats SET content = ?, role = ?, images = ?, tool_calls = ? WHERE guid = ?`;
+        const query = `UPDATE chats SET content = ?, role = ?, images = ?, tool_calls = ?, updated_at = toTimestamp(now()) WHERE guid = ?`;
  
         await this._cassandraCli.execute(
             query,
