@@ -9,7 +9,8 @@ export class ChatUpdated extends Event {
     public content: string,
     public role: ChatRole,
     public images?: string,
-    public tool_calls?: string
+    public tool_calls?: string,
+    public updated_at = new Date()
   ) {
     super(guid);
   }

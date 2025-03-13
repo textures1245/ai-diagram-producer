@@ -10,6 +10,8 @@ export class Chat extends AggregateRoot {
   private role: ChatRole = ChatRole.ASSISTANT;
   private images?: string;
   private tool_calls?: string;
+  private updated_at?: Date;
+  private created_at?: Date;
 
   constructor();
 
@@ -20,7 +22,9 @@ export class Chat extends AggregateRoot {
     content: string,
     role: ChatRole,
     images?: string,
-    tool_calls?: string
+    tool_calls?: string,
+    updated_at?: Date,
+    created_at?: Date
   );
 
   constructor(
@@ -30,7 +34,9 @@ export class Chat extends AggregateRoot {
     content?: string,
     role?: ChatRole,
     images?: string,
-    tool_calls?: string
+    tool_calls?: string,
+    updated_at?: Date,
+    created_at?: Date
   ) {
     super(guid);
     if (guid && userGuid && workspace_guid && content && role) {
@@ -42,7 +48,9 @@ export class Chat extends AggregateRoot {
           content,
           role,
           images,
-          tool_calls
+          tool_calls,
+          updated_at,
+          created_at
         )
       );
     }

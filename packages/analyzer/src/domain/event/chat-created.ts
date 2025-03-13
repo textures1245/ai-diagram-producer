@@ -12,7 +12,9 @@ export class ChatCreated extends Event {
     public content: string,
     public role: ChatRole,
     public images?: string,
-    public tool_calls?: string
+    public tool_calls?: string,
+    public created_at: Date = new Date(),
+    public updated_at: Date = new Date()
   ) {
     super(guid);
   }
