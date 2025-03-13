@@ -25,6 +25,12 @@ import { GetAllChatsQueryHandler } from "./application/query/handler/get-all-cha
 import { InversifyExpressServer } from "inversify-express-utils";
 import { urlencoded, json, type Application } from "express";
 import { errorHandler } from "./api/http/middleware/error-handler";
+import type { WorkspaceCreated } from "./domain/event/workspace-created";
+import { WorkspaceCreatedEventHandler } from "./application/event/handler/workspace-created-handler";
+import { CreateWorkspaceCommandHandler } from "./application/commands/handler/create-workspace-handler";
+import type { CreateWorkspaceCommand } from "./application/commands/definition/create-workspace";
+import { GetChatsByWorkspaceIdQueryHandler } from "./application/query/handler/get-chats-by-workspaceId-query-handler";
+import { GetWorkspacesByUserIdQueryHandler } from "./application/query/handler/get-workspaces-by-userId-query-handler";
 
 export const infraInitialize = async () => {
   const container = new Container();
@@ -49,6 +55,19 @@ export const infraInitialize = async () => {
     .bind<IQueryHandler<IQuery>>(TYPES.QueryHandler)
     .to(GetAllChatsQueryHandler);
 
+  container
+    .bind<IEventHandler<WorkspaceCreated>>(TYPES.Event)
+    .to(WorkspaceCreatedEventHandler);
+  container
+    .bind<ICommandHandler<CreateWorkspaceCommand>>(TYPES.CommandHandler)
+    .to(CreateWorkspaceCommandHandler);
+  container
+    .bind<IQueryHandler<IQuery>>(TYPES.QueryHandler)
+    .to(GetWorkspacesByUserIdQueryHandler);
+  container
+    .bind<IQueryHandler<IQuery>>(TYPES.QueryHandler)
+    .to(GetChatsByWorkspaceIdQueryHandler);
+
   const commandBus = container.get<ICommandBus>(TYPES.CommandBus);
 
   container
@@ -66,7 +85,7 @@ export const infraInitialize = async () => {
 
   const server = new InversifyExpressServer(container);
 
-server.setConfig((app: Application) => {
+  server.setConfig((app: Application) => {
     app.use(json());
     app.use(urlencoded({ extended: true }));
   });
