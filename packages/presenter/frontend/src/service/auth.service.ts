@@ -30,10 +30,22 @@ export class AuthService {
     // Create JWT with jose
     const secretKey = new TextEncoder().encode(this.jwtSecret);
 
-    const token = await new jose.SignJWT({ userId: user.id, email: user.email })
-      .setProtectedHeader({ alg: "HS256" })
-      .setExpirationTime("24h")
-      .sign(secretKey);
+    // Create JWT claim set first to inspect
+    const claims = { userId: user.id, email: user.email };
+    console.log("JWT claims before signing:", claims);
+
+    const jwt = new jose.SignJWT(claims);
+    console.log("JWT after initialization:", jwt);
+
+    jwt.setProtectedHeader({ alg: "HS256" });
+    jwt.setExpirationTime("24h");
+
+    const token = await jwt.sign(secretKey);
+    console.log("Signed token:", token);
+
+    // Decode and verify immediately to check
+    const { payload } = await jose.jwtVerify(token, secretKey);
+    console.log("Verified payload:", payload);
 
     const refreshToken = await new jose.SignJWT({
       userId: user.id,
@@ -155,15 +167,25 @@ export class AuthService {
       console.info(`User authenticated with email: ${email}`);
     }
 
+    // Create JWT with jose
     const secretKey = new TextEncoder().encode(this.jwtSecret);
 
-    const token = await new jose.SignJWT({
-      userId: user.id,
-      email: user.email,
-    })
-      .setProtectedHeader({ alg: "HS256" })
-      .setExpirationTime("24h")
-      .sign(secretKey);
+    // Create JWT claim set first to inspect
+    const claims = { userId: user.id, email: user.email };
+    console.log("JWT claims before signing:", claims);
+
+    const jwt = new jose.SignJWT(claims);
+    console.log("JWT after initialization:", jwt);
+
+    jwt.setProtectedHeader({ alg: "HS256" });
+    jwt.setExpirationTime("24h");
+
+    const token = await jwt.sign(secretKey);
+    console.log("Signed token:", token);
+
+    // Decode and verify immediately to check
+    const res = await jose.jwtVerify(token, secretKey);
+    console.log("Verified payload:", res.payload);
 
     const refreshToken = await new jose.SignJWT({
       userId: user.id,
@@ -172,8 +194,8 @@ export class AuthService {
       .setProtectedHeader({ alg: "HS256" })
       .setExpirationTime("7d")
       .sign(secretKey);
-
-    console.info(`User authenticated with Google: ${user.email}`);
+    
+    console.log("Generated refresh token:", refreshToken);
 
     return {
       user,
