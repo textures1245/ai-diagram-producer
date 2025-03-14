@@ -1,3 +1,5 @@
+import { MessageResponse } from "$service/messaging/response-processor";
+
 export class ServerError extends Error {
   public readonly httpCode: number;
   public readonly statusCode: string;
@@ -8,12 +10,7 @@ export class ServerError extends Error {
   }
 }
 
-export type AppError = {
-  message: string;
-  success: boolean;
-};
-
-export const createAppError = (message: string): AppError => ({
-  message,
+export const createMsgError = (msg: string): MessageResponse<void> => ({
+  error: msg,
   success: false,
 });
