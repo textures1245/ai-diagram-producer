@@ -10,18 +10,28 @@ export type AuthState = {
 
 // Create auth store with minimal functionality
 function createAuthStore() {
-  const { subscribe, set, update} = writable<AuthState>({
+  const { subscribe, set, update } = writable<AuthState>({
     user: null,
     token: null,
     refreshToken: null,
-  });
+});
 
   return {
     subscribe,
 
     // Update auth state with new values
-    setAuth: (authState: Partial<AuthState>) =>
-      update((state) => ({ ...state, ...authState })),
+    setAuth: (authState: Partial<AuthState>) => {
+      return update((state) => {
+        console.log("Auth state updated", authState, {
+          ...state,
+          ...authState,
+        });
+        return {
+          ...state,
+          ...authState,
+        };
+      });
+    },
 
     // Clear auth state (for logout)
     clearAuth: () =>
