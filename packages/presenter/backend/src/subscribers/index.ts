@@ -2,7 +2,7 @@ import "@adapter/http/controller/index";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import 'reflect-metadata';
+import "reflect-metadata";
 import type { IEventBus } from "@ai-ctx/core";
 import config from "@src/config";
 import { infraInitialize } from "@src/startup";
@@ -15,9 +15,9 @@ import type { Consumer } from "kafkajs";
   kafkaConsumer.connect();
 
   for (const topic of config.KAFKA_TOPICS_TO_SUBSCRIBE.split(",")) {
-    await kafkaConsumer.subscribe({ topic });
+    await kafkaConsumer.subscribe({ topic, fromBeginning: true });
   }
 
   const baseEventHandler = container.get<IEventBus>(TYPES.EventBus);
-  baseEventHandler.subscribeEvents();
+  await baseEventHandler.subscribeEvents();
 })();

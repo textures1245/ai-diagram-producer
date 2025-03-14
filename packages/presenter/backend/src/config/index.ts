@@ -5,8 +5,8 @@ export default {
   REDIS_URI: process.env["REDIS_URI"] || "redis://localhost:6379",
   KAFKA_BROKER_LIST: process.env["KAFKA_BROKER_LIST"] || "localhost:9092",
   KAFKA_CONSUMER_GROUP_ID:
-    process.env["KAFKA_CONSUMER_GROUP_ID"] || "ai_ctx.dev",
-  KAFKA_TOPICS_TO_SUBSCRIBE: process.env["KAFKA_TOPICS_TO_SUBSCRIBE"] || "user,workspace,chat",
+    process.env["KAFKA_CONSUMER_GROUP_ID"] || "ai_ctx.presenter-backend.dev",
+  KAFKA_TOPICS_TO_SUBSCRIBE: process.env["KAFKA_TOPICS_TO_SUBSCRIBE"] || "user",
   CASSANDRA_HOSTS: process.env["CASSANDRA_HOSTS"]
     ? process.env["CASSANDRA_HOSTS"].split(",")
     : ["localhost:9042"],

@@ -6,4 +6,5 @@ import "reflect-metadata";
 
 (async () => {
     await adapterInitialize()
+    console.log("Adapter initialized successfully.")
 })()

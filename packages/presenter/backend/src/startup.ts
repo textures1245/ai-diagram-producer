@@ -39,10 +39,6 @@ export const infraInitialize = async () => {
 
   await container.loadAsync(infrastructureModules);
   container.bind<pino.Logger>(TYPES.Logger).toConstantValue(logger);
-  
-  container
-    .bind<IEventHandler<UserCreated>>(TYPES.Event)
-    .to(UserCreatedEventHandler);
 
   container
     .bind<IEventHandler<UserCreated>>(TYPES.Event)
@@ -58,13 +54,13 @@ container
     .to(UpdateUserPasswordCommandHandler);
 
   container
-    .bind<IQueryHandler<ValidateCredentialQuery>>(TYPES.QueryHandler)
+    .bind<IQueryHandler<IQuery>>(TYPES.QueryHandler)
     .to(ValidateCredentialQueryHandler);
   container
-    .bind<IQueryHandler<GetUserByIdQuery>>(TYPES.QueryHandler)
+    .bind<IQueryHandler<IQuery>>(TYPES.QueryHandler)
     .to(GetUserByIdQueryHandler);
   container
-    .bind<IQueryHandler<GetAllUsersQuery>>(TYPES.QueryHandler)
+    .bind<IQueryHandler<IQuery>>(TYPES.QueryHandler)
     .to(GetAllUsersQueryHandler);
 
   const commandBus = container.get<ICommandBus>(TYPES.CommandBus);
