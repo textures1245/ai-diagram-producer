@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 
 export class UserSession {
-  protected _id: string;
+  private readonly _id: string;
   private email: string;
   private username?: string;
 

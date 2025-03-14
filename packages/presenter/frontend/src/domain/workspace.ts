@@ -1,21 +1,37 @@
-import { Chat } from "./chat";
+import { get } from "svelte/store";
+import { Chat, IChat } from "./chat";
 import { UserSession } from "./userSession";
 
-export class Workspace extends UserSession {
-  protected _id: string;
+interface IWorkspace {
+  id: string;
+  title: string;
+  created_at: string;
+  chats: Chat[];
+}
+
+export type WorkspaceDTO = IWorkspace & {
+  userId: string;
+};
+
+export class Workspace extends UserSession implements IWorkspace {
+  private readonly _wksId: string;
+  public readonly created_at: string;
+  public title: string;
   public chats: Chat[];
 
-  constructor(userId: string, id: string, chats: Chat[] = []) {
+  constructor(userId: string, id: string, title: string, created_at: string, chats: Chat[] = []) {
     super(userId);
-    this._id = id;
+    this._wksId = id;
+    this.title = title;
     this.chats = chats;
+    this.created_at = created_at;
   }
 
-  public getWorkspaceName = (): string => {
-    return `Workspace ${
-      this.chats[0].message.length > 15
-        ? this.chats[0].message.slice(0, 15) + "..."
-        : this.chats[0].message
-    }`;
-  };
+  get id(): string {
+    return this._wksId;
+  }
+
+  static fromWorkspaceJSON(data: WorkspaceDTO): Workspace {
+    return new Workspace(data.userId, data.id, data.title, data.created_at, []);
+  }
 }
