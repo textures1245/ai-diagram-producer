@@ -8,15 +8,15 @@
     $props();
 </script>
 
-<div class="flex w-full items-center justify-between gap-4 px-4 py-4">
-  <div id="avatar-container">
+<div class="grid grid-cols-6 w-full place-items-center items-center gap-4 px-4 py-4">
+  <div id="avatar-container" class="col-span-1">
     <img
       class="rounded-full w-6 h-6"
       src="https://t3.ftcdn.net/jpg/03/22/30/46/360_F_322304683_7ysRarFkmy2osfPKTOYQv7qTPofKelfb.jpg"
       alt="@shadcn"
     />
   </div>
-  <div class="" id="menu-container">
+  <div class="col-span-5" id="menu-container">
     <Collapsible {contents} />
   </div>
 </div>

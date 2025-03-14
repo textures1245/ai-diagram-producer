@@ -3,7 +3,12 @@ export const config = {
     jwtToken: import.meta.env.WXT_JWT_SECRET,
     googleToken: import.meta.env.WXT_GOOGLE_TOKEN,
   },
-  apiBaseUrl: import.meta.env.WXT_HTTP_BASE_URL_ADAPTER ?? "http://localhost:3000",
+  api: {
+    presenterBackend:
+      import.meta.env.WXT_HTTP_BASE_URL_PRESENTER_BACKEND ?? "http://localhost:3500",
+    analyzer:
+      import.meta.env.WXT_HTTP_BASE_URL_ANALYZER ?? "http://localhost:3200",
+  },
   auth: {
     cookies: {
       token: import.meta.env.WXT_AUTH_COOKIE_TOKEN ?? "token",
@@ -18,4 +23,9 @@ export const config = {
   featureFlags: {
     enableNewFeature: import.meta.env.WXT_ENABLE_NEW_FEATURE === "true",
   },
+};
+
+export type configType = {
+  token: { value: string };
+  refreshToken: { value: string };
 };

@@ -18,19 +18,25 @@
     </slot>
     <Collapsible.Trigger asChild let:builder>
       <Button builders={[builder]} variant="ghost" size="sm" class="w-9 p-0">
-        <Icon class="text-base" icon="mdi-light:home" />
+        <Icon class="text-base" icon="mdi-light:menu" />
         <span class="sr-only">Toggle</span>
       </Button>
     </Collapsible.Trigger>
   </div>
-  <div class="rounded-md border px-3 py-2 font-mono text-xs">
-    {contents.workspaceHistories[0].getWorkspaceName()}
-  </div>
-  <Collapsible.Content class="space-y-1  overflow-auto h-32">
+  {#if contents.workspaceHistories.length > 0}
+    <div class="rounded-md border px-3 py-2 font-mono text-xs">
+      {contents.workspaceHistories[0].title}
+    </div>
+  {/if}
+  <Collapsible.Content class="space-y-1 break-words transition-all overflow-auto max-h-32">
     {#each contents.workspaceHistories.slice(1) as ws}
       <div class="rounded-md border px-3 py-2 font-mono text-xs">
-        {ws.getWorkspaceName()}
+        {ws.title}
       </div>
+    {:else}
+      <span class="text-secondary-foreground text-xs">
+        You have no other workspaces, try creating one!</span
+      >
     {/each}
   </Collapsible.Content>
 </Collapsible.Root>

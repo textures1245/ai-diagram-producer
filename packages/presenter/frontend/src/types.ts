@@ -4,7 +4,15 @@ export const TYPES = {
   
   Logger: Symbol.for("Logger"),
   ApiBaseUrl: Symbol.for("ApiBaseUrl"),
-  AuthController: Symbol.for("AuthController"),
-  AuthService: Symbol.for("AuthService"),
   HttpClient: Symbol.for("HttpClient"),
+
+  AuthController: Symbol.for("AuthController"),
+  WorkspaceController: Symbol.for("WorkspaceController"),
+  ChatController: Symbol.for("ChatController"),
+  
+
+  AuthService: Symbol.for("AuthService"),
+  WorkspaceService: Symbol.for("WorkspaceService"),
+  ChatService: Symbol.for("ChatService"),
+  
 };

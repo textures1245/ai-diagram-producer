@@ -3,16 +3,55 @@
   import * as Card from "../../components/ui/card/index";
   import { Input } from "../../components/ui/input";
   import { Chat } from "../../../domain/chat";
+  import msg from "$entrypoints/messaging";
+  import { WorkspaceMessagingMethods } from "$service/messaging/workspace-message.interface";
+  import { UserSession } from "$domain/userSession";
+  import { ChatMessagingMethods } from "$service/messaging/chat-message.interface";
 
-  let chats: Chat[] = [];
-  let message = "";
+  let {
+    chats = $bindable(),
+    user,
+    params,
+  }: { chats: Chat[]; user: UserSession; params: any } = $props();
+  let message = $state("");
+  let errMsg = $state("");
 
-  function sendMessage() {
-    if (message.trim() !== "") {
-      chats = [...chats, Chat.mockData("USER")];
-      // Simulate API call with a dummy bot response
-      chats = [...chats, Chat.mockData("ASSISTANT")];
-      message = "";
+  async function sendMessage() {
+    console.log(params["workspace-id"]);
+    // creating workspace init first chat
+    if (!params["workspace-id"]) {
+      await msg.sendMessage(WorkspaceMessagingMethods.initWksSession, {
+        userId: user.id,
+        wks: {
+          title:
+            message.trim().length > 20
+              ? message.trim().slice(0, 20) + "..."
+              : message.trim(),
+        },
+        chat: {
+          content: message.trim(),
+          role: "USER",
+          images: [],
+          toolCalls: [],
+        },
+      });
+    } else {
+      const res = await msg.sendMessage(ChatMessagingMethods.addNewChat, {
+        userId: user.id,
+        wksId: params["workspace-id"],
+        chat: {
+          content: message.trim(),
+          role: "USER",
+          images: [],
+          toolCalls: [],
+        },
+      });
+      if (res.error) errMsg = res.error;
+      else {
+        chats = [...chats, res.data];
+        message = "";
+      }
+      
     }
   }
 </script>
@@ -29,21 +68,21 @@
             ? 'bg-indigo-600 text-white'
             : 'bg-gray-200 text-gray-800'}"
         >
-          {msg.message}
+          {msg.content}
         </div>
       </div>
     {/each}
   </Card.Content>
-  <Card.Footer class="border-t border-gray-200 p-4 bg-white">
+  <Card.Footer class="border-t  border-gray-200 p-4 bg-white">
     <form
       on:submit|preventDefault={sendMessage}
-      class="flex items-center gap-1"
+      class="flex w-full items-center gap-1"
     >
       <Input
         type="text"
         bind:value={message}
         placeholder="Type your message..."
-        class="text-xs min-w-full"
+        class="text-xs"
       />
       <Button type="submit" size="sm">Send</Button>
     </form>
