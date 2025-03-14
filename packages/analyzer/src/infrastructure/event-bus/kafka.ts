@@ -35,6 +35,25 @@ export class KafkaEventBus implements IEventBus {
             this.eventHandlers.filter((handler) => {
               return handler.event === eventDescriptor.type;
             });
+
+          // const eventDescriptor = JSON.parse(message.value.toString());
+          // console.log("Received event:", eventDescriptor);
+          // console.log("Event type:", eventDescriptor.type);
+          // console.log(
+          //   "Available handlers:",
+          //   this.eventHandlers.map((h) => h.event)
+          // );
+
+          // const matchedHandlers: IEventHandler<IEvent>[] =
+          //   this.eventHandlers.filter((handler) => {
+          //     console.log(
+          //       `Comparing handler.event: ${handler.event} with event type: ${eventDescriptor.type}`
+          //     );
+          //     return handler.event === eventDescriptor.type;
+          //   });
+
+          // console.log(`Found ${matchedHandlers.length} matching handlers`);
+
           await Promise.all(
             matchedHandlers.map((handler: IEventHandler<IEvent>) => {
               handler.handle(rehydrateEventFromDescriptor(eventDescriptor));
