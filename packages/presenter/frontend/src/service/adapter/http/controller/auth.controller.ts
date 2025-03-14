@@ -34,7 +34,7 @@ type User = {
 export class AuthController {
   private httpClient: FetchClient;
 
-  constructor(@inject(TYPES.ApiBaseUrl) private readonly baseUrl: string) {
+  constructor(private readonly baseUrl: string) {
     this.httpClient = new FetchClient(`${this.baseUrl}/api/v1/user`);
   }
 
@@ -53,12 +53,17 @@ export class AuthController {
 
   async registerUser(userData: CreateUserRequest): Promise<User> {
     try {
-      const response = await this.httpClient.post<ApiResponse<User>>(
-        "/",
-        userData
-      );
+      const response = await this.httpClient.post<
+        ApiResponse<{ guid: string }>
+      >("/", userData);
       console.info(`User registered successfully: ${userData.email}`);
-      return response.data as User;
+      const user: User = {
+        id: response.data.guid,
+        email: userData.email,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      return user;
     } catch (error) {
       console.error(`Failed to register user: ${userData.email}`);
       throw error;

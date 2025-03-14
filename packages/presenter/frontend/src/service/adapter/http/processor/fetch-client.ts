@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { storage } from "wxt/storage";
-import { config } from "$config/index";
+import { config, configType } from "$config/index";
 
 export interface HttpClient {
   get<T>(url: string, headers?: Record<string, string>): Promise<T>;
@@ -23,14 +23,14 @@ export class FetchClient implements HttpClient {
     data?: any,
     headers: Record<string, string> = {}
   ): Promise<T> {
-    const token = storage.getItem(`local:${config.auth.cookies.token}`);
+    const token = await storage.getItem<configType['token']>(`local:${config.auth.cookies.token}`);
     const requestHeaders: HeadersInit = {
       "Content-Type": "application/json",
       ...headers,
     };
 
     if (token) {
-      requestHeaders["Authorization"] = `Bearer ${token}`;
+      requestHeaders["Authorization"] = `Bearer ${token.value}`;
     }
 
     const options: RequestInit = {
