@@ -34,13 +34,13 @@ export default defineConfig({
         import.meta.env.WXT_GOOGLE_TOKEN,
       scopes: ["openid", "email", "profile"],
     },
-    hooks: {
-      'route:changed': (wxt, manifest) => {
-        if (wxt.config.mode === 'development') {
-          manifest.title += ' (DEV)';
-        }
-      },
-    },
+    // hooks: {
+    //   'route:changed': (wxt, manifest) => {
+    //     if (wxt.config.mode === 'development') {
+    //       manifest.title += ' (DEV)';
+    //     }
+    //   },
+    // },
     // content_security_policy: {
     //   extension_pages: "script-src 'self' 'wasm-unsafe-eval' http://localhost:* http://127.0.0.1:*; object-src 'self';",
     //   sandbox: "script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:* http://127.0.0.1:*; sandbox allow-scripts allow-forms allow-popups allow-modals; child-src 'self';"
