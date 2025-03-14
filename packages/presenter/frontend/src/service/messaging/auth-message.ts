@@ -1,8 +1,8 @@
-import { config } from "$config";
+import { config, configType } from "$config";
 import { UserSession } from "$domain/userSession";
 import msg from "$entrypoints/messaging";
 import { AuthService } from "$service/auth.service";
-import { createAppError } from "$service/lib/apperror";
+import { createMsgError } from "$service/lib/apperror";
 import { authStore } from "$service/store/authStore";
 import { AuthMessagingMethods } from "./auth-message.interface";
 
@@ -32,39 +32,39 @@ export function authMessageInitialize(m: typeof msg, authService: AuthService) {
         return { success: true, user: result };
       } catch (error: any) {
         console.error("Authentication failed", error);
-        return createAppError(error.message);
+        return createMsgError(error.message);
       }
     }
   );
 
   m.onMessage(AuthMessagingMethods.validateToken, async () => {
-    const token = await storage.getItem<string>(
+    const token = await storage.getItem<configType['token']>(
       `local:${config.auth.cookies.token}`
     );
-    if (!token) return createAppError("No token found");
+    if (!token) return createMsgError("No token found");
 
     console.info("Token validation request received");
     try {
-      const result = await authService.validateToken(token);
+      const result = await authService.validateToken(token.value);
       return { success: true, isValid: result.isValid, user: result.user };
     } catch (error: any) {
       console.error("Token validation failed", error);
-      return createAppError(error.message);
+      return createMsgError(error.message);
     }
   });
 
   m.onMessage(AuthMessagingMethods.refreshToken, async () => {
-    const refreshToken = await storage.getItem<string>(
+    const refreshToken = await storage.getItem<configType['refreshToken']>(
       `local:${config.auth.cookies.refreshToken}`
     );
 
     if (!refreshToken) {
-      return createAppError("No refresh token found");
+      return createMsgError("No refresh token found");
     }
 
     console.info("Token refresh request received");
     try {
-      const result = await authService.refreshToken(refreshToken);
+      const result = await authService.refreshToken(refreshToken.value);
       await storage.setItem(`local:${config.auth.cookies.token}`, {
         value: result.token,
       });
@@ -72,7 +72,7 @@ export function authMessageInitialize(m: typeof msg, authService: AuthService) {
       return { success: true, token: result.token };
     } catch (error: any) {
       console.error("Token refresh failed", error);
-      return createAppError(error.message);
+      return createMsgError(error.message);
     }
   });
 
@@ -99,7 +99,7 @@ export function authMessageInitialize(m: typeof msg, authService: AuthService) {
         return { success: true, user: result };
       } catch (error: any) {
         console.error("Google sign-in failed", error);
-        return createAppError(error.message);
+        return createMsgError(error.message);
       }
     }
   );
@@ -116,7 +116,7 @@ export function authMessageInitialize(m: typeof msg, authService: AuthService) {
       return { success: true };
     } catch (error: any) {
       console.error("Logout failed", error);
-      return createAppError(error.message);
+      return createMsgError(error.message);
     }
   });
 }

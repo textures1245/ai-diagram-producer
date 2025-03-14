@@ -3,3 +3,9 @@ export type MessageResponse<T = any> = {
   data?: T;
   error?: string;
 };
+
+export const createMsgSuccess = <T>(data?: T): MessageResponse<T> => ({
+  data: data,
+  success: true,
+});
+  
