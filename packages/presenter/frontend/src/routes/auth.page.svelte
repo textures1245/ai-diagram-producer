@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { AuthMessagingMethods } from "$service/messaging/auth-message.interface";
-  import { z } from "zod";
+  import {  z } from "zod";
   export const formSchema = z.object({
     email: z.string().min(2).max(50).email(),
     password: z
@@ -23,6 +23,7 @@
   import { config } from "$config";
   import msg from "$entrypoints/messaging";
   import { push } from "svelte-spa-router";
+  import { guard } from "$lib/guard";
 
   let isLoading = $state(false);
   let errorMessage = $state("");
@@ -63,6 +64,12 @@
       isLoading = false;
     }
   }
+
+  onMount(async () => {
+    let auth = await guard()
+    console.log(auth)
+    if (auth) push('/workspace')
+  })
 </script>
 
 <svelte:head>

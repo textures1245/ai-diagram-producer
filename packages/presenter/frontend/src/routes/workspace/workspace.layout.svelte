@@ -2,12 +2,55 @@
   import Chatbox from "$lib/route-components/core/Chatbox.svelte";
   import Navbar from "$lib/layout-components/Navbar.svelte";
   import { Workspace } from "$domain/workspace";
-  import { workspacesHistories } from "$lib/mock/data";
+  import { guard } from "$lib/guard";
+  import { Chat } from "$domain/chat";
+  import msg from "$entrypoints/messaging";
+  import { WorkspaceMessagingMethods } from "$service/messaging/workspace-message.interface";
+  import { get } from "svelte/store";
+  import { workspaceStore } from "$service/store/workspaceStore";
+  import { authStore } from "$service/store/authStore";
+  import { UserSession } from "$domain/userSession";
 
-  const contents = {
-    username: "textures1246",
-    workspaceHistories: workspacesHistories,
-  };
+  let contents: {
+    username: string;
+    workspaceHistories: Workspace[];
+  } = $state({
+    username: get(authStore).user?.getUsername || "",
+    workspaceHistories: [],
+  });
+
+  let chats: Chat[] = $state<Chat[]>([]);
+  let user: UserSession | null = $state<UserSession | null>(null);
+  let errorMsg = $state("");
+
+  const unSubOnWks = workspaceStore.subscribe((state) => {
+    contents.workspaceHistories = state.workspaces;
+  });
+
+  onMount(async () => {
+    await guard("/");
+
+    user = get(authStore).user;
+
+    if (!user) {
+      console.error("User not found");
+      return;
+    }
+
+    const res = await msg.sendMessage(WorkspaceMessagingMethods.getWkses, {
+      userId: user.id,
+    });
+    if (res.success) {
+      contents = {
+        ...contents,
+        workspaceHistories: get(workspaceStore).workspaces,
+      };
+    } else {
+      errorMsg = "Failed to retrieve workspace histories.";
+    }
+  });
+
+  onDestroy(() => unSubOnWks());
 </script>
 
 <div id="container" class="bg-muted/30">
@@ -16,7 +59,9 @@
       <Navbar {contents} />
       <hr class="bg-black text-black w-full" />
     </header>
-    <div class="h-96"></div>
+    <div class="h-96">
+      <Chatbox bind:chats />
+    </div>
   </main>
   <footer class=""></footer>
 </div>
