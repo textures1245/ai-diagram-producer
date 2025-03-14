@@ -21,7 +21,6 @@ export class KafkaEventBus implements IEventBus {
   async publish(chan: string, event: EventDescriptor): Promise<void> {
     const payload: string = JSON.stringify({ ...instanceToPlain(event) });
 
-  
     await this._producer.send({
       topic: chan,
       messages: [{ value: payload, key: event.aggregateGuid }],
@@ -36,6 +35,7 @@ export class KafkaEventBus implements IEventBus {
             this.eventHandlers.filter((handler) => {
               return handler.event === eventDescriptor.type;
             });
+
           await Promise.all(
             matchedHandlers.map((handler: IEventHandler<IEvent>) => {
               handler.handle(rehydrateEventFromDescriptor(eventDescriptor));
