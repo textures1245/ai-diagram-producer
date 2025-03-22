@@ -61,6 +61,6 @@ export class WorkspaceController {
 
     return resp
       .status(201)
-      .json(ok("Workspace created successfully", workspaceResp.guid));
+      .json(ok("Workspace created successfully", workspaceResp));
   }
 }

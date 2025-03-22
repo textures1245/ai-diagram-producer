@@ -90,8 +90,8 @@ export class ChatController {
       content: string;
       role: ChatRole;
       version: number;
-      images?: string;
-      tool_calls?: string;
+      images?: string[];
+      tool_calls?: string[];
     };
     const { id } = req.params;
 
