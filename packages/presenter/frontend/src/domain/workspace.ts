@@ -19,7 +19,13 @@ export class Workspace extends UserSession implements IWorkspace {
   public title: string;
   public chats: Chat[];
 
-  constructor(userId: string, id: string, title: string, created_at: string, chats: Chat[] = []) {
+  constructor(
+    userId: string,
+    id: string,
+    title: string,
+    created_at: string,
+    chats: Chat[] = []
+  ) {
     super(userId);
     this._wksId = id;
     this.title = title;
@@ -31,7 +37,13 @@ export class Workspace extends UserSession implements IWorkspace {
     return this._wksId;
   }
 
-  static fromWorkspaceJSON(data: WorkspaceDTO): Workspace {
-    return new Workspace(data.userId, data.id, data.title, data.created_at, []);
+  static fromWorkspaceJSON(data: Partial<WorkspaceDTO>): Workspace {
+    return new Workspace(
+      data.userId || "",
+      data.id || "",
+      data.title || "",
+      data.created_at || "",
+      []
+    );
   }
 }

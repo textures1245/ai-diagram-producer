@@ -1,6 +1,6 @@
 import { Workspace, WorkspaceDTO } from "./workspace";
 
-type ChatRole = "USER" | "ASSISTANT";
+export type ChatRole = "USER" | "ASSISTANT";
 
 export interface IChat {
   id: string;
@@ -59,14 +59,14 @@ export class Chat implements IChat {
     );
   }
 
-  static fromChatDTO(data: ChatDTO): Chat {
+  static fromChatDTO(data: Partial<ChatDTO>): Chat {
     return new Chat(
-      data.id,
-      data.content,
-      data.role,
-      data.version,
-      data.created_at,
-      data.updated_at,
+      data.id || "default-id",
+      data.content || "default content",
+      data.role || "USER",
+      data.version || 0,
+      data.created_at || new Date().toISOString(),
+      data.updated_at || new Date().toISOString(),
       data.images || [],
       data.toolCalls || []
     );
