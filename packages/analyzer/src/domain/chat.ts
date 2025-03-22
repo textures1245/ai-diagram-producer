@@ -8,8 +8,8 @@ export class Chat extends AggregateRoot {
   private workspace_guid!: string;
   private content!: string;
   private role: ChatRole = ChatRole.ASSISTANT;
-  private images?: string;
-  private tool_calls?: string;
+  private images?: string[];
+  private tool_calls?: string[];
   private updated_at?: Date;
   private created_at?: Date;
 
@@ -21,8 +21,8 @@ export class Chat extends AggregateRoot {
     workspace_guid: string,
     content: string,
     role: ChatRole,
-    images?: string,
-    tool_calls?: string,
+    images?: string[],
+    tool_calls?: string[],
     updated_at?: Date,
     created_at?: Date
   );
@@ -33,8 +33,8 @@ export class Chat extends AggregateRoot {
     workspace_guid?: string,
     content?: string,
     role?: ChatRole,
-    images?: string,
-    tool_calls?: string,
+    images?: string[],
+    tool_calls?: string[],
     updated_at?: Date,
     created_at?: Date
   ) {
@@ -59,8 +59,8 @@ export class Chat extends AggregateRoot {
   updateInfo(
     content: string,
     role: ChatRole,
-    images?: string,
-    tool_calls?: string
+    images?: string[],
+    tool_calls?: string[]
   ) {
     this.applyChange(
       new ChatUpdated(this.guid, content, role, images, tool_calls)

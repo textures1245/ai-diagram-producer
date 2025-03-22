@@ -6,8 +6,8 @@ export class CreateChatCommand extends Command {
   public workspaceGuid: string;
   public content: string;
   public role: ChatRole;
-  public images?: string;
-  public tool_calls?: string;
+  public images?: string[];
+  public tool_calls?: string[];
   public created_at?: Date;
   public updated_at?: Date;
 
@@ -16,11 +16,11 @@ export class CreateChatCommand extends Command {
     workspaceGuid: string,
     content: string,
     role: ChatRole,
-    guid?: string,
-    images?: string,
-    tool_calls?: string,
+    images?: string[],
+    tool_calls?: string[],
     created_at: Date = new Date(),
-    updated_at: Date = new Date()
+    updated_at: Date = new Date(),
+    guid?: string,
   ) {
     super(guid);
     this.userGuid = userGuid;

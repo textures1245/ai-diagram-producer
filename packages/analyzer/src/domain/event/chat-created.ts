@@ -11,8 +11,8 @@ export class ChatCreated extends Event {
     public workspace_guid: string,
     public content: string,
     public role: ChatRole,
-    public images?: string,
-    public tool_calls?: string,
+    public images?: string[],
+    public tool_calls?: string[],
     public created_at: Date = new Date(),
     public updated_at: Date = new Date()
   ) {

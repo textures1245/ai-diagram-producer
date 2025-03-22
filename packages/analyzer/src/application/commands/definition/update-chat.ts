@@ -5,16 +5,16 @@ export class UpdateChatCommand extends Command {
   public content: string;
   public role: ChatRole;
   public readonly originalVersion: number;
-  public images?: string;
-  public tool_calls?: string;
+  public images?: string[];
+  public tool_calls?: string[];
 
   constructor(
     guid: string,
     content: string,
     role: ChatRole,
     originalVersion: number,
-    images?: string,
-    tool_calls?: string
+    images?: string[],
+    tool_calls?: string[]
   ) {
     super(guid);
     this.content = content;
