@@ -28,11 +28,15 @@
       {contents.workspaceHistories[0].title}
     </div>
   {/if}
-  <Collapsible.Content class="space-y-1 break-words transition-all overflow-auto max-h-32">
+  <Collapsible.Content
+    class="space-y-1 break-words transition-all overflow-auto max-h-32"
+  >
     {#each contents.workspaceHistories.slice(1) as ws}
-      <div class="rounded-md border px-3 py-2 font-mono text-xs">
-        {ws.title}
-      </div>
+      <a href={`#workspace/${ws.id}`}>
+        <div class="rounded-md border px-3 py-2 font-mono text-xs">
+          {ws.title}
+        </div>
+      </a>
     {:else}
       <span class="text-secondary-foreground text-xs">
         You have no other workspaces, try creating one!</span
