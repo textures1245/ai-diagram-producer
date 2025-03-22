@@ -16,7 +16,9 @@ export function chatMessagingInitialize(
 ) {
   m.onMessage(
     ChatMessagingMethods.updateChat,
-    async (msg: { data: { userId: string; wksId: string; data: ChatDTO } }) => {
+    async (msg: {
+      data: { userId: string; wksId: string; data: Partial<ChatDTO> };
+    }) => {
       const { userId, wksId, data: message } = msg.data;
 
       try {
@@ -26,14 +28,6 @@ export function chatMessagingInitialize(
           userId,
           workspaceId: wksId,
         });
-
-        workspaceStore.updateChat(wksId, {
-          ...message,
-          id: message.id,
-          userId,
-          workspaceId: wksId,
-        });
-
         return createMsgSuccess(response);
       } catch (error: any) {
         console.error("Error sending chat message", error);
@@ -44,7 +38,9 @@ export function chatMessagingInitialize(
 
   m.onMessage(
     ChatMessagingMethods.addNewChat,
-    async (msg: { data: { userId: string; wksId: string; data: ChatDTO } }) => {
+    async (msg: {
+      data: { userId: string; wksId: string; data: Partial<ChatDTO> };
+    }) => {
       const { userId, wksId, data: message } = msg.data;
 
       try {
@@ -54,7 +50,6 @@ export function chatMessagingInitialize(
           message
         );
 
-        workspaceStore.addChatToWorkspaceId(wksId, message);
         return createMsgSuccess(response);
       } catch (error: any) {
         console.error("Error sending chat message", error);
@@ -72,8 +67,7 @@ export function chatMessagingInitialize(
           workspace_id: wksId,
         });
 
-        workspaceStore.setChatsToWorkspaceId(wksId, response);
-        return createMsgSuccess();
+        return createMsgSuccess(response);
       } catch (error: any) {
         console.error("Error fetching chats", error);
         return createMsgError(error.message);

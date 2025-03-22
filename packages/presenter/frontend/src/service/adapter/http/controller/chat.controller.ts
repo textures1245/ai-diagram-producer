@@ -17,7 +17,10 @@ export class ChatController {
 
   async fetchChatsByQuery(qry: FetchChatsByQuery) {
     const queryStr = Object.entries(qry)
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .map(([key, value]) =>
+        value ? `${key}=${encodeURIComponent(value)}` : ""
+      )
+      .filter(Boolean)
       .join("&");
 
     const response = await this.httpClient.get<ApiResponse<ChatDTO[]>>(
@@ -30,7 +33,7 @@ export class ChatController {
   async createChat(
     workspace_id: string,
     user_id: string,
-    body: ChatDTO
+    body: Partial<ChatDTO>
   ): Promise<{ guid: string }> {
     const response = await this.httpClient.post<ApiResponse<{ guid: string }>>(
       `/`,
@@ -39,21 +42,24 @@ export class ChatController {
         user_id,
         content: body.content,
         role: body.role,
-        images: body.images,
-        tool_calls: body.toolCalls,
+        images: JSON.stringify(body.images),
+        tool_calls: JSON.stringify(body.toolCalls),
       }
     );
     return response.data;
   }
 
-  async updateChat(chat_id: string, body: ChatDTO): Promise<{ guid: string }> {
+  async updateChat(
+    chat_id: string,
+    body: Partial<ChatDTO>
+  ): Promise<{ guid: string }> {
     const response = await this.httpClient.patch<ApiResponse<{ guid: string }>>(
       `/${chat_id}`,
       {
         content: body.content,
         role: body.role,
-        images: body.images,
-        tool_calls: body.toolCalls,
+        images: JSON.stringify(body.images),
+        tool_calls: JSON.stringify(body.toolCalls),
         version: body.version,
       }
     );

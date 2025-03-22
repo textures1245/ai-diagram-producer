@@ -23,22 +23,22 @@ function createAuthStore() {
         set({
           workspaces: wks,
         });
-        initialized = true;
+        // initialized = true;
       }
     },
-    addWorkspace: (wksDat: WorkspaceDTO, chatDat: ChatDTO) =>
+    addWorkspace: (wksDat: Partial<WorkspaceDTO>, chatDat: Partial<ChatDTO>) =>
       update((state) => {
         const workspaces = [
           ...state.workspaces,
-          {
-            ...Workspace.fromWorkspaceJSON(wksDat),
+          Workspace.fromWorkspaceJSON({
+            ...wksDat,
             chats: [Chat.fromChatDTO(chatDat)],
-          } as Workspace,
+          }),
         ];
         return { ...state, workspaces };
       }),
 
-    addChatToWorkspaceId: (workspaceId: string, chat: ChatDTO) => {
+    addChatToWorkspaceId: (workspaceId: string, chat: Partial<ChatDTO>) => {
       update((state) => {
         const workspaces = state.workspaces.map((workspace) => {
           if (workspace.id === workspaceId) {
@@ -52,7 +52,7 @@ function createAuthStore() {
         return { ...state, workspaces };
       });
     },
-    updateChat: (wksId: string, chat: ChatDTO) => {
+    updateChat: (wksId: string, chat: Partial<ChatDTO>) => {
       update((state) => {
         const workspaces = state.workspaces.map((workspace) => {
           if (workspace.id === wksId) {

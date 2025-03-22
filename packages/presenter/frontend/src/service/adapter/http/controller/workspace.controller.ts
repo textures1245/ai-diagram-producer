@@ -21,7 +21,10 @@ export class WorkspaceController {
     qry: FetchWorkspacesByQuery
   ): Promise<WorkspaceDTO[]> {
     const queryStr = Object.entries(qry)
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .map(([key, value]) =>
+        value ? `${key}=${encodeURIComponent(value)}` : ""
+      )
+      .filter(Boolean)
       .join("&");
 
     const response = await this.httpClient.get<ApiResponse<WorkspaceDTO[]>>(
@@ -30,11 +33,15 @@ export class WorkspaceController {
     return response.data;
   }
 
-  async createWorkspace(userId: string): Promise<{ guid: string }> {
+  async createWorkspace(
+    userId: string,
+    title: string
+  ): Promise<{ guid: string }> {
     const response = await this.httpClient.post<ApiResponse<{ guid: string }>>(
       `/`,
       {
-        userId,
+        user_id: userId,
+        title,
       }
     );
 
