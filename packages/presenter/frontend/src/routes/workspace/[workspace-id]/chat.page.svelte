@@ -21,7 +21,7 @@
   let user: UserSession | null = $state<UserSession | null>(null);
   let wks = $state(
     get(workspaceStore).workspaces.find(
-      (wksId) => wksId.id === params["workspace-id"]
+      (wksId) => wksId.id === params["workspace_id"]
     )
   );
   let chats: Chat[] = $state<Chat[]>([]);
@@ -29,7 +29,7 @@
 
   const unSubOnWks = workspaceStore.subscribe((state) => {
     contents.workspaceHistories = state.workspaces;
-    wks = state.workspaces.find((wksId) => wksId.id === params["workspace-id"]);
+    wks = state.workspaces.find((wksId) => wksId.id === params["workspace_id"]);
     if (wks && wks.chats) {
       chats = wks.chats;
     }
@@ -37,25 +37,31 @@
 
   onMount(async () => {
     await guard("/");
-
-    console.log(params);
-
     user = get(authStore).user;
 
-    if (!user) {
-      console.error("User not found");
-      return;
-    }
+    console.log($state.snapshot(wks));
+    console.log(
+      "workspace store all, fetch on id ",
+      get(workspaceStore).workspaces,
+      get(workspaceStore).workspaces.find((wks) => {
+        // console.log("workspace Id:", wks);
+        return wks.id === params["workspace_id"];
+      })?.id
+    );
 
     if (!wks || wks?.chats.length === 0) {
       const res = await msg.sendMessage(ChatMessagingMethods.getChats, {
         userId: user.id,
-        wksId: params["workspace-id"],
+        wksId: params["workspace_id"],
       });
+
       if (res.success) {
+        workspaceStore.setChatsToWorkspaceId(params["workspace_id"], res.data!);
+
         wks = get(workspaceStore).workspaces.find(
-          (wksId) => wksId.id === params["workspace-id"]
+          (wksId) => wksId.id === params["workspace_id"]
         );
+
         if (!wks || !wks.chats) {
           errMsg = "No chats found for this workspace.";
           return;
@@ -88,7 +94,7 @@
       <hr class="bg-black text-black w-full" />
     </header>
     <div class="h-96">
-      <Chatbox bind:chats />
+      <Chatbox bind:chats user={user!} wksId={params["workspace_id"]} />
     </div>
   </main>
   <footer class=""></footer>

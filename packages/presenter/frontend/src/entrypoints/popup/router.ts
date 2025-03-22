@@ -24,5 +24,5 @@ import WorkspaceLayout from "@/routes/workspace/workspace.layout.svelte";
 export const routes = {
   "/": AuthPage,
   "/workspace": WorkspaceLayout,
-  "/workspace/:workspace-id": ChatPage,
+  "/workspace/:workspace_id": ChatPage,
 };

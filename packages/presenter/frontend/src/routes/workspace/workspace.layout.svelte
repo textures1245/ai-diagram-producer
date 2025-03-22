@@ -16,7 +16,7 @@
     workspaceHistories: Workspace[];
   } = $state({
     username: get(authStore).user?.getUsername || "",
-    workspaceHistories: [],
+    workspaceHistories: get(workspaceStore).workspaces,
   });
 
   let chats: Chat[] = $state<Chat[]>([]);
@@ -37,16 +37,23 @@
       return;
     }
 
-    const res = await msg.sendMessage(WorkspaceMessagingMethods.getWkses, {
-      userId: user.id,
-    });
-    if (res.success) {
-      contents = {
-        ...contents,
-        workspaceHistories: get(workspaceStore).workspaces,
-      };
-    } else {
-      errorMsg = "Failed to retrieve workspace histories.";
+    if (contents.workspaceHistories.length === 0) {
+      const res = await msg.sendMessage(WorkspaceMessagingMethods.getWkses, {
+        userId: user.id,
+      });
+      if (res.success) {
+        workspaceStore.setWorkspaces(res.data!);
+        contents = {
+          ...contents,
+          workspaceHistories: get(workspaceStore).workspaces,
+        };
+        console.log(
+          "Workspace histories retrieved successfully:",
+          contents.workspaceHistories
+        );
+      } else {
+        errorMsg = "Failed to retrieve workspace histories.";
+      }
     }
   });
 
@@ -60,7 +67,7 @@
       <hr class="bg-black text-black w-full" />
     </header>
     <div class="h-96">
-      <Chatbox bind:chats />
+      <Chatbox bind:chats user={user!} wksId={undefined} />
     </div>
   </main>
   <footer class=""></footer>
